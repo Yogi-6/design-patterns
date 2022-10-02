@@ -1,39 +1,22 @@
-// Design a canvas where the user can put shapes and remove shapes.
+import 'package:design_patterns/memento/canvas/caretaker.dart';
+import 'package:design_patterns/memento/canvas/memento.dart';
+import 'package:design_patterns/memento/canvas/originator.dart';
 
-void main(List<String> args) {}
+void main(List<String> args) {
+  // final square = Square(side: 5);
+  // final circle = Circle(radius: 4);
 
-/// Originator
-class Canvas {}
+  final canvas = Canvas();
+  final history = ListCanvasHistory();
 
-/// Memento Contract
-abstract class Shape {}
+  canvas.add(Square(side: 5));
+  canvas.add(Circle(radius: 8));
 
-/// Memento Implementation
-class Circle implements Shape {
-  final int radius;
+  history.push(canvas.createMemento());
 
-  const Circle({required this.radius});
+  canvas.add(Circle(radius: 4));
 
-  @override
-  String toString() => 'Circle(radius: $radius)';
-}
+  canvas.restoreMemento(history.pop());
 
-/// Caretaker contract
-abstract class CanvasHistory {
-  void pushShape(Shape shape);
-
-  Shape popShape();
-}
-
-/// Catetaker implementation
-class ListCanvasHistory implements CanvasHistory {
-  final history = <Shape>[];
-
-  @override
-  Shape popShape() {
-    throw UnimplementedError();
-  }
-
-  @override
-  void pushShape(Shape shape) {}
+  print(canvas.shapes);
 }
